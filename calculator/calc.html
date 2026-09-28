@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #222;
+            font-family: Arial, sans-serif;
+        }
+
+        .calculator {
+            width: 330px;
+            padding: 20px;
+            background: #333;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        #display {
+            width: 100%;
+            height: 75px;
+            margin-bottom: 15px;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: #111;
+            color: white;
+            font-size: 28px;
+            text-align: right;
+            outline: none;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        button {
+            height: 60px;
+            border: none;
+            border-radius: 10px;
+            font-size: 22px;
+            cursor: pointer;
+            background: #555;
+            color: white;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: #666;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .operator {
+            background: #ff9500;
+        }
+
+        .operator:hover {
+            background: #e88900;
+        }
+
+        .clear {
+            background: #d9534f;
+        }
+
+        .backspace {
+            background: #777;
+        }
+
+        .equal {
+            background: #28a745;
+        }
+
+        .equal:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="calculator">
+
+        <input type="text" id="display" value="0" readonly>
+
+        <div class="buttons">
+
+            <button class="clear" data-action="clear">C</button>
+            <button class="backspace" data-action="backspace">⌫</button>
+            <button class="operator" data-value="÷">÷</button>
+            <button class="operator" data-value="×">×</button>
+
+            <button data-value="7">7</button>
+            <button data-value="8">8</button>
+            <button data-value="9">9</button>
+            <button class="operator" data-value="-">−</button>
+
+            <button data-value="4">4</button>
+            <button data-value="5">5</button>
+            <button data-value="6">6</button>
+            <button class="operator" data-value="+">+</button>
+
+            <button data-value="1">1</button>
+            <button data-value="2">2</button>
+            <button data-value="3">3</button>
+            <button class="equal" data-action="calculate">=</button>
+
+            <button data-value="0">0</button>
+            <button data-value=".">.</button>
+
+        </div>
+    </div>
+
+    <script>
+        const display = document.getElementById("display");
+        const buttons = document.querySelectorAll("button");
+
+        let expression = "";
+        let justCalculated = false;
+
+        buttons.forEach(button => {
+            button.addEventListener("click", () => {
+
+                const value = button.dataset.value;
+                const action = button.dataset.action;
+
+                // Number / decimal / operator
+                if (value !== undefined) {
+
+                    // New calculation after result
+                    if (justCalculated && !isOperator(value)) {
+                        expression = "";
+                        justCalculated = false;
+                    }
+
+                    // Decimal handling
+                    if (value === ".") {
+                        const lastNumber = expression.split(/[+\-×÷]/).pop();
+
+                        if (lastNumber.includes(".")) {
+                            return;
+                        }
+
+                        if (lastNumber === "") {
+                            expression += "0";
+                        }
+                    }
+
+                    // Operator handling
+                    if (isOperator(value)) {
+
+                        if (expression === "" && value !== "-") {
+                            return;
+                        }
+
+                        // Replace previous operator
+                        if (isOperator(expression.slice(-1))) {
+                            expression = expression.slice(0, -1);
+                        }
+                    }
+
+                    expression += value;
+                    display.value = expression;
+                }
+
+                // Clear
+                if (action === "clear") {
+                    expression = "";
+                    display.value = "0";
+                    justCalculated = false;
+                }
+
+                // Backspace
+                if (action === "backspace") {
+                    expression = expression.slice(0, -1);
+                    display.value = expression || "0";
+                }
+
+                // Calculate
+                if (action === "calculate") {
+                    calculateResult();
+                }
+            });
+        });
+
+        function isOperator(value) {
+            return ["+", "-", "×", "÷"].includes(value);
+        }
+
+        function calculateResult() {
+
+            if (expression === "") {
+                return;
+            }
+
+            // Check division by zero
+            const parts = expression.split("÷");
+
+            for (let i = 1; i < parts.length; i++) {
+                if (parseFloat(parts[i]) === 0) {
+                    display.value = "Error: Division by 0";
+                    expression = "";
+                    justCalculated = true;
+                    return;
+                }
+            }
+
+            try {
+
+                let calculation = expression
+                    .replace(/×/g, "*")
+                    .replace(/÷/g, "/");
+
+                // Allow only calculator characters
+                if (!/^[0-9+\-*/. ]+$/.test(calculation)) {
+                    throw new Error("Invalid");
+                }
+
+                let result = Function(
+                    '"use strict"; return (' + calculation + ')'
+                )();
+
+                if (!Number.isFinite(result)) {
+                    throw new Error("Invalid");
+                }
+
+                // Remove unnecessary decimal zeros
+                result = Number(result.toFixed(10));
+
+                expression = String(result);
+                display.value = result;
+                justCalculated = true;
+
+            } catch (error) {
+                display.value = "Error";
+                expression = "";
+                justCalculated = true;
+            }
+        }
+
+        // Keyboard support
+        document.addEventListener("keydown", (event) => {
+
+            const key = event.key;
+
+            if ((key >= "0" && key <= "9") || key === ".") {
+                document
+                    .querySelector(`button[data-value="${key}"]`)
+                    ?.click();
+            }
+
+            if (key === "+") {
+                document.querySelector('[data-value="+"]').click();
+            }
+
+            if (key === "-") {
+                document.querySelector('[data-value="-"]').click();
+            }
+
+            if (key === "*") {
+                document.querySelector('[data-value="×"]').click();
+            }
+
+            if (key === "/") {
+                document.querySelector('[data-value="÷"]').click();
+            }
+
+            if (key === "Enter" || key === "=") {
+                document.querySelector('[data-action="calculate"]').click();
+            }
+
+            if (key === "Escape") {
+                document.querySelector('[data-action="clear"]').click();
+            }
+
+            if (key === "Backspace") {
+                document.querySelector('[data-action="backspace"]').click();
+            }
+        });
+    </script>
+
+</body>
+</html>
