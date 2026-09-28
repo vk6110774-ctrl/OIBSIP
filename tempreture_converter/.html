@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Converter</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #74ebd5, #9face6);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 450px;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: #667eea;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            background: #667eea;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #5568d8;
+        }
+
+        #message {
+            margin-top: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .result {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f5f6ff;
+            border-radius: 10px;
+        }
+
+        .result h2 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .result p {
+            padding: 10px;
+            margin: 8px 0;
+            background: white;
+            border-radius: 6px;
+            color: #444;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Temperature Converter</h1>
+
+        <p class="subtitle">
+            Convert Celsius, Fahrenheit and Kelvin
+        </p>
+
+        <div class="form-group">
+            <label for="temperature">
+                Enter Temperature:
+            </label>
+
+            <input
+                type="number"
+                id="temperature"
+                placeholder="Enter temperature"
+                step="any"
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="unit">
+                Select Input Unit:
+            </label>
+
+            <select id="unit">
+                <option value="celsius">Celsius (°C)</option>
+                <option value="fahrenheit">Fahrenheit (°F)</option>
+                <option value="kelvin">Kelvin (K)</option>
+            </select>
+        </div>
+
+        <button onclick="convertTemperature()">
+            Convert
+        </button>
+
+        <div id="message"></div>
+
+        <div class="result">
+
+            <h2>Converted Values</h2>
+
+            <p id="celsiusResult">
+                Celsius: --
+            </p>
+
+            <p id="fahrenheitResult">
+                Fahrenheit: --
+            </p>
+
+            <p id="kelvinResult">
+                Kelvin: --
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        function convertTemperature() {
+
+            const input =
+                document.getElementById("temperature");
+
+            const unit =
+                document.getElementById("unit").value;
+
+            const message =
+                document.getElementById("message");
+
+            const celsiusResult =
+                document.getElementById("celsiusResult");
+
+            const fahrenheitResult =
+                document.getElementById("fahrenheitResult");
+
+            const kelvinResult =
+                document.getElementById("kelvinResult");
+
+
+            const temperature =
+                parseFloat(input.value);
+
+
+            // Empty / non-numeric validation
+            if (
+                input.value.trim() === "" ||
+                isNaN(temperature)
+            ) {
+
+                message.textContent =
+                    "Please enter a valid numeric temperature.";
+
+                message.style.color = "red";
+
+                return;
+            }
+
+
+            let celsius;
+
+
+            // Convert input to Celsius
+            if (unit === "celsius") {
+
+                celsius = temperature;
+
+            }
+            else if (unit === "fahrenheit") {
+
+                celsius =
+                    (temperature - 32) * 5 / 9;
+
+            }
+            else if (unit === "kelvin") {
+
+                celsius =
+                    temperature - 273.15;
+            }
+
+
+            // Absolute zero validation
+            if (celsius < -273.15) {
+
+                message.textContent =
+                    "Invalid temperature! Below absolute zero.";
+
+                message.style.color = "red";
+
+                celsiusResult.textContent =
+                    "Celsius: --";
+
+                fahrenheitResult.textContent =
+                    "Fahrenheit: --";
+
+                kelvinResult.textContent =
+                    "Kelvin: --";
+
+                return;
+            }
+
+
+            // Convert Celsius to Fahrenheit
+            const fahrenheit =
+                (celsius * 9 / 5) + 32;
+
+
+            // Convert Celsius to Kelvin
+            const kelvin =
+                celsius + 273.15;
+
+
+            // Display results
+            celsiusResult.textContent =
+                `Celsius: ${celsius.toFixed(2)} °C`;
+
+            fahrenheitResult.textContent =
+                `Fahrenheit: ${fahrenheit.toFixed(2)} °F`;
+
+            kelvinResult.textContent =
+                `Kelvin: ${kelvin.toFixed(2)} K`;
+
+
+            message.textContent =
+                "Temperature converted successfully!";
+
+            message.style.color = "green";
+        }
+
+    </script>
+
+</body>
+</html>
