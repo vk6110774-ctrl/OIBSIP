@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Marie Curie | A Life of Discovery</title>
+
+  <!-- Google Fonts: two contrasting font styles -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    /* ---------- Base ---------- */
+    :root {
+      --navy: #101c2c;
+      --blue: #183b56;
+      --gold: #d4a84f;
+      --cream: #f8f4ec;
+      --paper: #fffdf8;
+      --light-blue: #eaf2f6;
+      --text: #24313d;
+      --muted: #66727d;
+      --white: #ffffff;
+      --shadow: 0 18px 50px rgba(16, 28, 44, 0.14);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      color: var(--text);
+      background: var(--cream);
+      line-height: 1.75;
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: "Playfair Display", Georgia, serif;
+      line-height: 1.15;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      min-height: 92vh;
+      display: grid;
+      place-items: center;
+      padding: 60px 24px;
+      background:
+        radial-gradient(circle at 80% 20%, rgba(212, 168, 79, 0.2), transparent 28%),
+        linear-gradient(135deg, #0b1725 0%, #183b56 65%, #275d78 100%);
+      color: var(--white);
+      overflow: hidden;
+    }
+
+    .hero-inner {
+      width: min(1150px, 100%);
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: center;
+      gap: 70px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 18px;
+      color: #e6c77b;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    #title {
+      max-width: 700px;
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      letter-spacing: -0.04em;
+    }
+
+    .tagline {
+      max-width: 620px;
+      margin-top: 22px;
+      color: #dbe7ed;
+      font-size: clamp(1.05rem, 2vw, 1.35rem);
+    }
+
+    .hero-note {
+      margin-top: 28px;
+      color: #b7c8d2;
+      font-size: 0.92rem;
+    }
+
+    /* ---------- Image ---------- */
+    #img-div {
+      position: relative;
+      justify-self: center;
+      width: min(390px, 100%);
+    }
+
+    #img-div::before {
+      content: "";
+      position: absolute;
+      inset: -18px 18px 18px -18px;
+      border: 1px solid rgba(212, 168, 79, 0.55);
+      border-radius: var(--radius);
+      z-index: 0;
+    }
+
+    #image {
+      position: relative;
+      z-index: 1;
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 560px;
+      object-fit: cover;
+      object-position: center top;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      filter: grayscale(12%);
+    }
+
+    #img-caption {
+      position: relative;
+      z-index: 2;
+      margin: -45px 20px 0;
+      padding: 14px 18px;
+      background: rgba(255, 255, 255, 0.95);
+      color: var(--text);
+      border-radius: 12px;
+      font-size: 0.78rem;
+      line-height: 1.5;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    /* ---------- Shared Sections ---------- */
+    .section {
+      padding: 95px 24px;
+    }
+
+    .container {
+      width: min(1050px, 100%);
+      margin: 0 auto;
+    }
+
+    .section-heading {
+      margin-bottom: 42px;
+    }
+
+    .section-kicker {
+      margin-bottom: 10px;
+      color: var(--gold);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .section-heading h2 {
+      color: var(--navy);
+      font-size: clamp(2.2rem, 5vw, 3.7rem);
+    }
+
+    /* ---------- Biography ---------- */
+    #tribute-info {
+      background: var(--paper);
+    }
+
+    .bio-grid {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    .bio-intro {
+      position: sticky;
+      top: 30px;
+    }
+
+    .bio-intro h3 {
+      font-size: 2rem;
+      color: var(--blue);
+    }
+
+    .bio-intro p {
+      margin-top: 15px;
+      color: var(--muted);
+    }
+
+    .bio-copy p {
+      margin-bottom: 22px;
+      font-size: 1.03rem;
+    }
+
+    .bio-copy p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* ---------- Quote ---------- */
+    .quote-section {
+      padding: 80px 24px;
+      background: var(--gold);
+      color: var(--navy);
+    }
+
+    .quote {
+      width: min(900px, 100%);
+      margin: auto;
+      text-align: center;
+    }
+
+    .quote-mark {
+      display: block;
+      font-family: Georgia, serif;
+      font-size: 5rem;
+      line-height: 0.6;
+      opacity: 0.35;
+    }
+
+    blockquote {
+      margin: 20px 0;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(1.7rem, 4vw, 3rem);
+      font-style: italic;
+      line-height: 1.35;
+    }
+
+    .quote cite {
+      font-size: 0.9rem;
+      font-style: normal;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* ---------- Timeline ---------- */
+    .timeline-section {
+      background: var(--light-blue);
+    }
+
+    .timeline {
+      position: relative;
+      max-width: 850px;
+      margin: 0 auto;
+      padding-left: 38px;
+      border-left: 2px solid rgba(24, 59, 86, 0.22);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 35px;
+      padding: 26px 30px;
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 30px rgba(24, 59, 86, 0.08);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .timeline-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 15px 35px rgba(24, 59, 86, 0.14);
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -48px;
+      top: 30px;
+      width: 18px;
+      height: 18px;
+      background: var(--gold);
+      border: 4px solid var(--light-blue);
+      border-radius: 50%;
+    }
+
+    .year {
+      display: inline-block;
+      margin-bottom: 7px;
+      color: var(--blue);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+    }
+
+    .timeline-item h3 {
+      margin-bottom: 8px;
+      font-size: 1.45rem;
+      color: var(--navy);
+    }
+
+    .timeline-item p {
+      color: var(--muted);
+    }
+
+    /* ---------- Legacy ---------- */
+    .legacy-section {
+      background: var(--navy);
+      color: var(--white);
+    }
+
+    .legacy-section .section-heading h2 {
+      color: var(--white);
+    }
+
+    .legacy-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .legacy-card {
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius);
+    }
+
+    .legacy-card .number {
+      color: var(--gold);
+      font-family: "Playfair Display", serif;
+      font-size: 2.5rem;
+    }
+
+    .legacy-card h3 {
+      margin: 10px 0;
+      font-size: 1.3rem;
+    }
+
+    .legacy-card p {
+      color: #bdcad2;
+      font-size: 0.92rem;
+    }
+
+    /* ---------- Sources ---------- */
+    .sources {
+      padding: 35px 24px;
+      background: #09131f;
+      color: #93a5b2;
+      text-align: center;
+      font-size: 0.82rem;
+    }
+
+    .sources a {
+      color: #d8bb70;
+      text-decoration: none;
+    }
+
+    .sources a:hover {
+      text-decoration: underline;
+    }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 800px) {
+      .hero {
+        min-height: auto;
+        padding: 80px 22px;
+      }
+
+      .hero-inner {
+        grid-template-columns: 1fr;
+        gap: 55px;
+        text-align: center;
+      }
+
+      #img-div {
+        width: min(360px, 90%);
+      }
+
+      .bio-grid {
+        grid-template-columns: 1fr;
+        gap: 35px;
+      }
+
+      .bio-intro {
+        position: static;
+      }
+
+      .legacy-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section {
+        padding: 70px 22px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      #title {
+        font-size: 3.5rem;
+      }
+
+      .timeline {
+        padding-left: 25px;
+      }
+
+      .timeline-item {
+        padding: 22px;
+      }
+
+      .timeline-item::before {
+        left: -35px;
+      }
+
+      blockquote {
+        font-size: 1.65rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main id="main">
+
+    <!-- HERO -->
+    <header class="hero">
+      <div class="hero-inner">
+
+        <div class="hero-text">
+          <span class="eyebrow">A Tribute to Scientific Curiosity</span>
+
+          <h1 id="title">Marie Curie</h1>
+
+          <p class="tagline">
+            The pioneering physicist and chemist who transformed our
+            understanding of radioactivity and opened new paths for science.
+          </p>
+
+          <p class="hero-note">
+            1867 — 1934 &nbsp;·&nbsp; Physics &nbsp;·&nbsp; Chemistry
+          </p>
+        </div>
+
+        <figure id="img-div">
+          <img
+            id="image"
+            src="https://upload.wikimedia.org/wikipedia/commons/0/04/Marie_Curie_1903.jpg"
+            alt="Portrait of Marie Curie"
+          >
+
+          <figcaption id="img-caption">
+            Marie Curie, photographed in 1903. Public-domain image from
+            Wikimedia Commons.
+          </figcaption>
+        </figure>
+
+      </div>
+    </header>
+
+
+    <!-- BIOGRAPHY -->
+    <section id="tribute-info" class="section">
+      <div class="container">
+
+        <div class="section-heading">
+          <div class="section-kicker">The Person Behind the Discoveries</div>
+          <h2>A life devoted to understanding nature</h2>
+        </div>
+
+        <div class="bio-grid">
+
+          <div class="bio-intro">
+            <h3>Curiosity became a calling.</h3>
+            <p>
+              Marie Skłodowska-Curie was born in Warsaw in 1867 and later
+              built her scientific career in Paris.
+            </p>
+          </div>
+
+          <div class="bio-copy">
+
+            <p>
+              Marie Curie grew up in a family that valued education, at a time
+              when opportunities for women in higher education were severely
+              restricted in her homeland. She eventually moved to Paris, where
+              she studied physics and mathematics at the Sorbonne. Her years
+              of intense study established the foundation for a career that
+              would reshape modern science.
+            </p>
+
+            <p>
+              Together with Pierre Curie, Marie investigated the mysterious
+              radiation first observed by Henri Becquerel. Their experiments
+              showed that the phenomenon came from the atoms themselves rather
+              than from ordinary chemical reactions. During this work, Marie
+              and Pierre identified two previously unknown elements, polonium
+              and radium, and helped establish radioactivity as a major field
+              of scientific research.
+            </p>
+
+            <p>
+              Curie's achievements were recognized internationally. In 1903,
+              she shared the Nobel Prize in Physics with Pierre Curie and
+              Henri Becquerel. In 1911, she received the Nobel Prize in
+              Chemistry for her work on radium and polonium. These awards made
+              her a landmark figure in the history of science and the first
+              person to receive Nobel Prizes in two different scientific
+              disciplines.
+            </p>
+
+            <p>
+              Her influence extended beyond her discoveries. During the First
+              World War, Curie helped develop mobile X-ray services that could
+              assist doctors in treating wounded soldiers. She continued
+              supporting scientific research and training throughout her life.
+              Her legacy survives not only in laboratories and institutions
+              bearing her name, but also in the generations of researchers who
+              followed the questions she helped make possible.
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- QUOTE -->
+    <section class="quote-section">
+      <div class="quote">
+
+        <span class="quote-mark">“</span>
+
+        <blockquote>
+          One never notices what has been done;
+          one can only see what remains to be done.
+        </blockquote>
+
+        <cite>— Marie Curie, letter to her brother, 1894</cite>
+
+      </div>
+    </section>
+
+
+    <!-- TIMELINE -->
+    <section class="section timeline-section">
+      <div class="container">
+
+        <div class="section-heading">
+          <div class="section-kicker">Milestones</div>
+          <h2>A timeline of discovery</h2>
+        </div>
+
+        <ol class="timeline">
+
+          <li class="timeline-item">
+            <span class="year">1867</span>
+            <h3>Born in Warsaw</h3>
+            <p>
+              Maria Skłodowska is born in Warsaw, then part of the Russian
+              Empire.
+            </p>
+          </li>
+
+          <li class="timeline-item">
+            <span class="year">1891</span>
+            <h3>Moves to Paris</h3>
+            <p>
+              She moves to Paris to continue her education at the University
+              of Paris, studying physics and mathematics.
+            </p>
+          </li>
+
+          <li class="timeline-item">
+            <span class="year">1898</span>
+            <h3>Polonium and radium</h3>
+            <p>
+              Marie and Pierre Curie announce the discovery of polonium and
+              later radium during their investigations of radioactive
+              materials.
+            </p>
+          </li>
+
+          <li class="timeline-item">
+            <span class="year">1903</span>
+            <h3>Nobel Prize in Physics</h3>
+            <p>
+              Curie shares the Nobel Prize in Physics with Pierre Curie and
+              Henri Becquerel for research into radiation phenomena.
+            </p>
+          </li>
+
+          <li class="timeline-item">
+            <span class="year">1911</span>
+            <h3>Nobel Prize in Chemistry</h3>
+            <p>
+              She receives the Nobel Prize in Chemistry for the discovery of
+              radium and polonium and the study of radium.
+            </p>
+          </li>
+
+          <li class="timeline-item">
+            <span class="year">1914–1918</span>
+            <h3>X-rays during World War I</h3>
+            <p>
+              Curie helps organize mobile X-ray units that bring radiological
+              assistance closer to wounded soldiers.
+            </p>
+          </li>
+
+          <li class="timeline-item">
+            <span class="year">1934</span>
+            <h3>The end of a remarkable life</h3>
+            <p>
+              Marie Curie dies in France after a lifetime of scientific work.
+              Her research continues to influence physics, chemistry and
+              medicine.
+            </p>
+          </li>
+
+        </ol>
+      </div>
+    </section>
+
+
+    <!-- LEGACY -->
+    <section class="section legacy-section">
+      <div class="container">
+
+        <div class="section-heading">
+          <div class="section-kicker">Her Legacy</div>
+          <h2>Why Curie's work still matters</h2>
+        </div>
+
+        <div class="legacy-grid">
+
+          <article class="legacy-card">
+            <div class="number">01</div>
+            <h3>Radioactivity</h3>
+            <p>
+              Her research helped establish radioactivity as an important
+              scientific field and deepened understanding of atomic matter.
+            </p>
+          </article>
+
+          <article class="legacy-card">
+            <div class="number">02</div>
+            <h3>Two Nobel Prizes</h3>
+            <p>
+              Curie remains historically distinctive for receiving Nobel
+              Prizes in both Physics and Chemistry.
+            </p>
+          </article>
+
+          <article class="legacy-card">
+            <div class="number">03</div>
+            <h3>Scientific Inspiration</h3>
+            <p>
+              Her career became an enduring example of persistence,
+              experimental rigor and the pursuit of knowledge.
+            </p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- SOURCES -->
+    <footer class="sources">
+      <p>
+        Built as a tribute to Marie Curie.
+        Research:
+        <a
+          href="https://en.wikipedia.org/wiki/Marie_Curie"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Wikipedia
+        </a>
+        · Image:
+        <a
+          href="https://commons.wikimedia.org/wiki/File:Marie_Curie_1903.jpg"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Wikimedia Commons
+        </a>
+        · Quote:
+        <a
+          href="https://en.wikiquote.org/wiki/Marie_Curie"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Wikiquote
+        </a>
+      </p>
+    </footer>
+
+  </main>
+
+</body>
+</html>
+
