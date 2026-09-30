@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login Authentication System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 420px;
+            background: white;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #777;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            margin-bottom: 17px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #667eea;
+        }
+
+        small {
+            display: block;
+            color: #777;
+            margin-top: -10px;
+            margin-bottom: 18px;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            background: #667eea;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #5568d8;
+        }
+
+        .message {
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .switch {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+
+        .switch a {
+            color: #667eea;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Dashboard */
+
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+        }
+
+        nav {
+            background: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        nav h2 {
+            color: #333;
+        }
+
+        .logout-btn {
+            width: auto;
+            padding: 10px 20px;
+            background: #dc3545;
+        }
+
+        .dashboard-content {
+            min-height: calc(100vh - 75px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 25px;
+        }
+
+        .welcome-card {
+            background: white;
+            width: 100%;
+            max-width: 550px;
+            text-align: center;
+            padding: 45px;
+            border-radius: 18px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .icon {
+            width: 70px;
+            height: 70px;
+            background: #28a745;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            font-size: 35px;
+        }
+
+        .welcome-card h1 {
+            margin-bottom: 10px;
+        }
+
+        .welcome-card p {
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .dashboard-logout {
+            background: #dc3545;
+            margin-top: 15px;
+        }
+
+        /* Responsive */
+
+        @media (max-width: 600px) {
+
+            .card {
+                padding: 25px;
+            }
+
+            nav {
+                padding: 15px 20px;
+            }
+
+            nav h2 {
+                font-size: 20px;
+            }
+
+            .welcome-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- LOGIN / REGISTER AREA -->
+
+    <div class="container" id="authContainer">
+
+        <div class="card">
+
+            <!-- REGISTER -->
+
+            <div id="registerPage">
+
+                <h1>Create Account</h1>
+
+                <p class="subtitle">
+                    Register to access your account
+                </p>
+
+                <form id="registerForm">
+
+                    <label>Username / Email</label>
+
+                    <input
+                        type="text"
+                        id="registerUsername"
+                        placeholder="Enter username or email"
+                    >
+
+                    <label>Password</label>
+
+                    <input
+                        type="password"
+                        id="registerPassword"
+                        placeholder="Minimum 8 characters"
+                    >
+
+                    <small>
+                        Password must contain at least 8 characters
+                        and 1 number.
+                    </small>
+
+                    <button type="submit">
+                        Register
+                    </button>
+
+                    <p id="registerMessage" class="message"></p>
+
+                </form>
+
+                <p class="switch">
+                    Already have an account?
+                    <a id="showLogin">Login</a>
+                </p>
+
+            </div>
+
+
+            <!-- LOGIN -->
+
+            <div id="loginPage" style="display:none;">
+
+                <h1>Welcome Back</h1>
+
+                <p class="subtitle">
+                    Login to access your dashboard
+                </p>
+
+                <form id="loginForm">
+
+                    <label>Username / Email</label>
+
+                    <input
+                        type="text"
+                        id="loginUsername"
+                        placeholder="Enter username or email"
+                    >
+
+                    <label>Password</label>
+
+                    <input
+                        type="password"
+                        id="loginPassword"
+                        placeholder="Enter password"
+                    >
+
+                    <button type="submit">
+                        Login
+                    </button>
+
+                    <p id="loginMessage" class="message"></p>
+
+                </form>
+
+                <p class="switch">
+                    Don't have an account?
+                    <a id="showRegister">Register</a>
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- DASHBOARD -->
+
+    <div class="dashboard" id="dashboard">
+
+        <nav>
+
+            <h2>My Dashboard</h2>
+
+            <button
+                class="logout-btn"
+                id="logoutBtn"
+            >
+                Logout
+            </button>
+
+        </nav>
+
+
+        <div class="dashboard-content">
+
+            <div class="welcome-card">
+
+                <div class="icon">
+                    ✓
+                </div>
+
+                <h1>
+                    Welcome!
+                </h1>
+
+                <p>
+                    You have successfully logged in.
+                </p>
+
+                <p>
+                    Logged in as:
+                    <strong id="currentUser"></strong>
+                </p>
+
+                <button
+                    class="dashboard-logout"
+                    id="dashboardLogout"
+                >
+                    Logout
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        /* =========================
+           GET USERS
+        ========================= */
+
+        function getUsers() {
+
+            return JSON.parse(
+                localStorage.getItem("authUsers")
+            ) || [];
+
+        }
+
+
+        /* =========================
+           SAVE USERS
+        ========================= */
+
+        function saveUsers(users) {
+
+            localStorage.setItem(
+                "authUsers",
+                JSON.stringify(users)
+            );
+
+        }
+
+
+        /* =========================
+           SHA-256 PASSWORD HASH
+        ========================= */
+
+        async function hashPassword(password) {
+
+            const encoder = new TextEncoder();
+
+            const data = encoder.encode(password);
+
+            const hashBuffer =
+                await crypto.subtle.digest(
+                    "SHA-256",
+                    data
+                );
+
+            const hashArray =
+                Array.from(
+                    new Uint8Array(hashBuffer)
+                );
+
+            return hashArray
+                .map(
+                    byte =>
+                        byte.toString(16)
+                        .padStart(2, "0")
+                )
+                .join("");
+
+        }
+
+
+        /* =========================
+           PASSWORD VALIDATION
+        ========================= */
+
+        function validPassword(password) {
+
+            const minimumLength =
+                password.length >= 8;
+
+            const hasNumber =
+                /\d/.test(password);
+
+            return minimumLength && hasNumber;
+
+        }
+
+
+        /* =========================
+           REGISTER
+        ========================= */
+
+        document
+            .getElementById("registerForm")
+            .addEventListener(
+                "submit",
+                async function(event) {
+
+                    event.preventDefault();
+
+
+                    const username =
+                        document
+                        .getElementById(
+                            "registerUsername"
+                        )
+                        .value
+                        .trim();
+
+
+                    const password =
+                        document
+                        .getElementById(
+                            "registerPassword"
+                        )
+                        .value;
+
+
+                    const message =
+                        document.getElementById(
+                            "registerMessage"
+                        );
+
+
+                    /* Empty validation */
+
+                    if (!username || !password) {
+
+                        message.textContent =
+                            "Please fill in all fields.";
+
+                        message.style.color = "red";
+
+                        return;
+                    }
+
+
+                    /* Password validation */
+
+                    if (!validPassword(password)) {
+
+                        message.textContent =
+                            "Password must be at least 8 characters and contain at least 1 number.";
+
+                        message.style.color = "red";
+
+                        return;
+                    }
+
+
+                    const users = getUsers();
+
+
+                    /* Duplicate check */
+
+                    const alreadyExists =
+                        users.some(
+                            user =>
+                                user.username
+                                .toLowerCase() ===
+                                username.toLowerCase()
+                        );
+
+
+                    if (alreadyExists) {
+
+                        message.textContent =
+                            "Username or email already exists.";
+
+                        message.style.color = "red";
+
+                        return;
+                    }
+
+
+                    /* Hash password */
+
+                    const hashedPassword =
+                        await hashPassword(password);
+
+
+                    /* Create user */
+
+                    const newUser = {
+
+                        username: username,
+
+                        password: hashedPassword,
+
+                        registeredAt:
+                            new Date()
+                            .toLocaleString()
+
+                    };
+
+
+                    users.push(newUser);
+
+                    saveUsers(users);
+
+
+                    message.textContent =
+                        "Registration successful!";
+
+                    message.style.color = "green";
+
+
+                    /* Clear form */
+
+                    document
+                        .getElementById(
+                            "registerForm"
+                        )
+                        .reset();
+
+
+                    /* Open Login */
+
+                    setTimeout(function() {
+
+                        document
+                            .getElementById(
+                                "registerPage"
+                            )
+                            .style.display = "none";
+
+                        document
+                            .getElementById(
+                                "loginPage"
+                            )
+                            .style.display = "block";
+
+                    }, 1000);
+
+                }
+            );
+
+
+        /* =========================
+           LOGIN
+        ========================= */
+
+        document
+            .getElementById("loginForm")
+            .addEventListener(
+                "submit",
+                async function(event) {
+
+                    event.preventDefault();
+
+
+                    const username =
+                        document
+                        .getElementById(
+                            "loginUsername"
+                        )
+                        .value
+                        .trim();
+
+
+                    const password =
+                        document
+                        .getElementById(
+                            "loginPassword"
+                        )
+                        .value;
+
+
+                    const message =
+                        document.getElementById(
+                            "loginMessage"
+                        );
+
+
+                    /* Empty validation */
+
+                    if (!username || !password) {
+
+                        message.textContent =
+                            "Please enter username/email and password.";
+
+                        message.style.color = "red";
+
+                        return;
+                    }
+
+
+                    const users = getUsers();
+
+
+                    /* Hash entered password */
+
+                    const hashedPassword =
+                        await hashPassword(password);
+
+
+                    /* Check credentials */
+
+                    const user =
+                        users.find(
+                            item =>
+                                item.username
+                                .toLowerCase() ===
+                                username.toLowerCase()
+                                &&
+                                item.password ===
+                                hashedPassword
+                        );
+
+
+                    /* Incorrect credentials */
+
+                    if (!user) {
+
+                        message.textContent =
+                            "Invalid username/email or password.";
+
+                        message.style.color = "red";
+
+                        return;
+                    }
+
+
+                    /* Create login session */
+
+                    localStorage.setItem(
+                        "loggedInUser",
+                        user.username
+                    );
+
+
+                    message.textContent =
+                        "Login successful!";
+
+                    message.style.color = "green";
+
+
+                    setTimeout(function() {
+
+                        showDashboard();
+
+                    }, 600);
+
+                }
+            );
+
+
+        /* =========================
+           SHOW DASHBOARD
+        ========================= */
+
+        function showDashboard() {
+
+            const loggedInUser =
+                localStorage.getItem(
+                    "loggedInUser"
+                );
+
+
+            if (!loggedInUser) {
+
+                showLoginPage();
+
+                return;
+
+            }
+
+
+            document
+                .getElementById(
+                    "authContainer"
+                )
+                .style.display = "none";
+
+
+            document
+                .getElementById(
+                    "dashboard"
+                )
+                .style.display = "block";
+
+
+            document
+                .getElementById(
+                    "currentUser"
+                )
+                .textContent =
+                    loggedInUser;
+
+        }
+
+
+        /* =========================
+           SHOW LOGIN
+        ========================= */
+
+        function showLoginPage() {
+
+            document
+                .getElementById(
+                    "registerPage"
+                )
+                .style.display = "none";
+
+
+            document
+                .getElementById(
+                    "loginPage"
+                )
+                .style.display = "block";
+
+        }
+
+
+        /* =========================
+           SHOW REGISTER
+        ========================= */
+
+        function showRegisterPage() {
+
+            document
+                .getElementById(
+                    "loginPage"
+                )
+                .style.display = "none";
+
+
+            document
+                .getElementById(
+                    "registerPage"
+                )
+                .style.display = "block";
+
+        }
+
+
+        /* =========================
+           LOGOUT
+        ========================= */
+
+        function logout() {
+
+            localStorage.removeItem(
+                "loggedInUser"
+            );
+
+            document
+                .getElementById(
+                    "dashboard"
+                )
+                .style.display = "none";
+
+
+            document
+                .getElementById(
+                    "authContainer"
+                )
+                .style.display = "flex";
+
+
+            showLoginPage();
+
+        }
+
+
+        /* =========================
+           BUTTON EVENTS
+        ========================= */
+
+        document
+            .getElementById(
+                "showLogin"
+            )
+            .addEventListener(
+                "click",
+                showLoginPage
+            );
+
+
+        document
+            .getElementById(
+                "showRegister"
+            )
+            .addEventListener(
+                "click",
+                showRegisterPage
+            );
+
+
+        document
+            .getElementById(
+                "logoutBtn"
+            )
+            .addEventListener(
+                "click",
+                logout
+            );
+
+
+        document
+            .getElementById(
+                "dashboardLogout"
+            )
+            .addEventListener(
+                "click",
+                logout
+            );
+
+
+        /* =========================
+           INITIAL CHECK
+        ========================= */
+
+        window.addEventListener(
+            "load",
+            function() {
+
+                const loggedInUser =
+                    localStorage.getItem(
+                        "loggedInUser"
+                    );
+
+
+                if (loggedInUser) {
+
+                    showDashboard();
+
+                } else {
+
+                    document
+                        .getElementById(
+                            "authContainer"
+                        )
+                        .style.display = "flex";
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>
